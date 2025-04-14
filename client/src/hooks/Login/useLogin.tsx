@@ -1,7 +1,13 @@
 import {useState} from 'react'
 import axios from 'axios';
+import { useDispatch, UseDispatch,useSelector } from 'react-redux';
+import { loginUser } from '../../features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 export function useLogin () {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const {isLoading,isError,message} = useSelector((state)=>state.auth)
     const [userData,setUserData] = useState({"email":'',"password":'' })
 
     const handleChange = (e:any) => {
@@ -13,20 +19,25 @@ export function useLogin () {
       };
       
 
-    const handleSubmit = async(e:any) =>{
+      const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        try{
-            console.log("submited")
-        }catch (error){
-            console.error(error)
+        try {
+          const result = await dispatch(loginUser(userData)).unwrap();
+          console.log("Login Success:", result);
+          navigate("/");
+        } catch (error) {
+          console.error("Login Failed:", error);
         }
-    }
+      };
 
     return {
         userData,
         setUserData,
         handleSubmit,
-        handleChange
+        handleChange,
+        isLoading,
+        isError,
+        message
     }
 
 }
