@@ -12,8 +12,8 @@ const initialState = {
   };
 
 export const loginUser = createAsyncThunk('auth/login',async (userData)=>{
-    const response = axios.post("http://localhost:5000/api/users/login",userData)
-    return response.data;
+    const response = await axios.post("http://localhost:5000/api/users/login",userData)
+    return response?.data;
 });
 
 const authSlice = createSlice({
