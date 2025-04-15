@@ -1,6 +1,6 @@
 import {useState} from 'react'
 import axios from 'axios';
-import { useDispatch, UseDispatch,useSelector } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { loginUser } from '../../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
 

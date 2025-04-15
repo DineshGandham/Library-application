@@ -1,7 +1,7 @@
-import { useSelector, UseSelector } from "react-redux"
-import { Navigate, useLocation } from "react-router-dom"
+import { useSelector} from "react-redux"
+import { Navigate} from "react-router-dom"
 
-const ProtectedRoute = (children) => {
+const ProtectedRoute = ({children}) => {
   const {user} = useSelector((state)=>state.auth);
   return user?children:<Navigate to="/login"/>
 }
