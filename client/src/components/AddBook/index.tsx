@@ -1,6 +1,7 @@
 import { useBookForm } from "../../hooks/AddBooks/useBookForm"
+import { AddBookProps } from "../../types"
 
-const AddBook = ({ closeModal }) => {
+const AddBook: React.FC<AddBookProps> = ({ closeModal }) => {
 
   const {
     bookData,

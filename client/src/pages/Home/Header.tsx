@@ -1,5 +1,10 @@
+import React from 'react';
 
-const Header = ({handleLogOut}) => {
+interface HeaderProps {
+  handleLogOut: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ handleLogOut }) => {
   return (
     <header className="bg-black text-white p-4 flex justify-between items-center">
       <div className="text-xl font-bold">
@@ -8,7 +13,7 @@ const Header = ({handleLogOut}) => {
 
       <button
         className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded"
-        onClick={() => handleLogOut()}
+        onClick={handleLogOut}
       >
         Logout
       </button>

@@ -1,34 +1,36 @@
-import {useState} from 'react'
-import axios from 'axios';
-import { useDispatch,useSelector } from 'react-redux';
-import { loginUser } from '../../features/auth/authSlice';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { loginUser } from '../../features/auth/authSlice';
+import { LoginData, AuthState } from '../../types';
 
-export function useLogin () {
+export function useLogin() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {isLoading,isError,message} = useSelector((state)=>state.auth)
-    const [userData,setUserData] = useState({"email":'',"password":'' })
+    const { isLoading, isError, message } = useSelector((state: { auth: AuthState }) => state.auth);
+    const [userData, setUserData] = useState<LoginData>({
+        email: '',
+        password: ''
+    });
 
-    const handleChange = (e:any) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setUserData((prevData) => ({
-          ...prevData,
-          [name]: value,
+            ...prevData,
+            [name]: value,
         }));
-      };
-      
+    };
 
-      const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-          const result = await dispatch(loginUser(userData)).unwrap();
-          console.log("Login Success:", result);
-          navigate("/");
+            const result = await dispatch(loginUser(userData)).unwrap();
+            console.log("Login Success:", result);
+            navigate("/");
         } catch (error) {
-          console.error("Login Failed:", error);
+            console.error("Login Failed:", error);
         }
-      };
+    };
 
     return {
         userData,
@@ -38,6 +40,5 @@ export function useLogin () {
         isLoading,
         isError,
         message
-    }
-
+    };
 }
