@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
-  Grid,
   Card,
   CardContent,
   Typography,
@@ -13,6 +12,7 @@ import {
   Avatar,
   Divider,
   useTheme,
+  Button,
 } from '@mui/material';
 import {
   Book as BookIcon,
@@ -103,54 +103,31 @@ const Dashboard: React.FC = () => {
         Dashboard
       </Typography>
       
-      <Grid container spacing={3} sx={{ mb: 4 }}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
         {stats.map((stat) => (
-          <Grid item xs={12} sm={6} md={3} key={stat.title} component="div">
-            <Card
-              sx={{
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                transition: 'transform 0.2s',
-                '&:hover': {
-                  transform: 'translateY(-4px)',
-                },
-              }}
-            >
+          <Box
+            key={stat.title}
+            sx={{
+              flex: '1 1 200px',
+              minWidth: { xs: '100%', sm: '45%', md: '22%' }
+            }}
+          >
+            <Card>
               <CardContent>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Box>
-                    <Typography color="textSecondary" gutterBottom>
-                      {stat.title}
-                    </Typography>
-                    <Typography variant="h4" component="div">
-                      {stat.value}
-                    </Typography>
-                  </Box>
-                  <Avatar
-                    sx={{
-                      bgcolor: stat.color,
-                      width: 56,
-                      height: 56,
-                    }}
-                  >
-                    {stat.icon}
-                  </Avatar>
-                </Box>
+                <Typography color="textSecondary" gutterBottom>
+                  {stat.title}
+                </Typography>
+                <Typography variant="h5" component="div">
+                  {stat.value}
+                </Typography>
               </CardContent>
             </Card>
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
 
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6} component="div">
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3, mt: 4 }}>
+        <Box sx={{ flex: '1 1 45%', minWidth: { xs: '100%', md: '45%' } }}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
@@ -198,52 +175,35 @@ const Dashboard: React.FC = () => {
               </List>
             </CardContent>
           </Card>
-        </Grid>
+        </Box>
 
-        <Grid item xs={12} md={6} component="div">
+        <Box sx={{ flex: '1 1 45%', minWidth: { xs: '100%', md: '45%' } }}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
                 Quick Actions
               </Typography>
-              <Grid container spacing={2}>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
                 {quickActions.map((action) => (
-                  <Grid item xs={6} key={action.title} component="div">
-                    <Card
+                  <Box
+                    key={action.title}
+                    sx={{ flex: '1 1 200px', minWidth: { xs: '45%', sm: '200px' } }}
+                  >
+                    <Button
+                      variant="contained"
+                      startIcon={action.icon}
                       onClick={action.action}
-                      sx={{
-                        cursor: 'pointer',
-                        transition: 'all 0.2s',
-                        '&:hover': {
-                          backgroundColor: theme.palette.primary.light,
-                          color: theme.palette.common.white,
-                          transform: 'translateY(-2px)',
-                        },
-                      }}
+                      fullWidth
                     >
-                      <CardContent>
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: 1,
-                          }}
-                        >
-                          {action.icon}
-                          <Typography variant="body1" align="center">
-                            {action.title}
-                          </Typography>
-                        </Box>
-                      </CardContent>
-                    </Card>
-                  </Grid>
+                      {action.title}
+                    </Button>
+                  </Box>
                 ))}
-              </Grid>
+              </Box>
             </CardContent>
           </Card>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Box>
   );
 };

@@ -54,8 +54,6 @@ const BorrowingsList: React.FC = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [borrowings, setBorrowings] = useState<Borrowing[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
 
@@ -64,23 +62,22 @@ const BorrowingsList: React.FC = () => {
   }, []);
 
   const fetchBorrowings = async () => {
-    setLoading(true);
     try {
       const response = await borrowingService.getAll();
       setBorrowings(response.data);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to fetch borrowings');
-    } finally {
-      setLoading(false);
+    } catch (err) {
+      console.error('Failed to fetch borrowings:', err);
     }
   };
 
   const handleReturn = async (id: string) => {
-    try {
-      await borrowingService.returnBook(id);
-      fetchBorrowings();
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to return book');
+    if (window.confirm('Are you sure you want to return this book?')) {
+      try {
+        await borrowingService.return(id);
+        fetchBorrowings();
+      } catch (err) {
+        console.error('Failed to return book:', err);
+      }
     }
   };
 

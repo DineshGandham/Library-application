@@ -48,8 +48,6 @@ const MembersList: React.FC = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [members, setMembers] = useState<Member[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [membershipFilter, setMembershipFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -59,14 +57,11 @@ const MembersList: React.FC = () => {
   }, []);
 
   const fetchMembers = async () => {
-    setLoading(true);
     try {
       const response = await memberService.getAll();
       setMembers(response.data);
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to fetch members');
-    } finally {
-      setLoading(false);
+      console.error('Failed to fetch members:', err.response?.data?.message || 'Failed to fetch members');
     }
   };
 
@@ -76,7 +71,7 @@ const MembersList: React.FC = () => {
         await memberService.delete(id);
         fetchMembers();
       } catch (err: any) {
-        setError(err.response?.data?.message || 'Failed to delete member');
+        console.error('Failed to delete member:', err.response?.data?.message || 'Failed to delete member');
       }
     }
   };

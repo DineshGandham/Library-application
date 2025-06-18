@@ -1,12 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-
-interface Book {
-  id: string;
-  title: string;
-  author: string;
-  coverImage?: string;
-}
+import { Book } from "../../types";
 
 interface BookState {
   books: Book[];
@@ -50,7 +44,12 @@ const initialState: BookState = {
 const booksSlice = createSlice({
   name: "books",
   initialState,
-  reducers: {},
+  reducers: {
+    clearBooks: (state) => {
+      state.books = [];
+      state.status = 'idle';
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchBooks.pending, (state) => {
@@ -69,4 +68,5 @@ const booksSlice = createSlice({
   },
 });
 
+export const { clearBooks } = booksSlice.actions;
 export default booksSlice.reducer;

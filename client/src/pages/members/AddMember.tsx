@@ -7,7 +7,6 @@ import {
   Typography,
   TextField,
   Button,
-  Grid,
   MenuItem,
   Alert,
   Snackbar,
@@ -67,8 +66,8 @@ const AddMember: React.FC = () => {
       <Card>
         <CardContent>
           <form onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={6} component="div">
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+              <Box sx={{ flex: '1 1 45%' }}>
                 <TextField
                   fullWidth
                   label="Full Name"
@@ -77,8 +76,8 @@ const AddMember: React.FC = () => {
                   onChange={handleChange}
                   required
                 />
-              </Grid>
-              <Grid item xs={12} md={6} component="div">
+              </Box>
+              <Box sx={{ flex: '1 1 45%' }}>
                 <TextField
                   fullWidth
                   label="Email"
@@ -88,8 +87,8 @@ const AddMember: React.FC = () => {
                   onChange={handleChange}
                   required
                 />
-              </Grid>
-              <Grid item xs={12} md={6} component="div">
+              </Box>
+              <Box sx={{ flex: '1 1 45%' }}>
                 <TextField
                   fullWidth
                   label="Phone Number"
@@ -98,8 +97,8 @@ const AddMember: React.FC = () => {
                   onChange={handleChange}
                   required
                 />
-              </Grid>
-              <Grid item xs={12} md={6} component="div">
+              </Box>
+              <Box sx={{ flex: '1 1 45%' }}>
                 <TextField
                   fullWidth
                   select
@@ -115,8 +114,8 @@ const AddMember: React.FC = () => {
                     </MenuItem>
                   ))}
                 </TextField>
-              </Grid>
-              <Grid item xs={12} component="div">
+              </Box>
+              <Box sx={{ flex: '1 1 100%' }}>
                 <TextField
                   fullWidth
                   multiline
@@ -127,8 +126,8 @@ const AddMember: React.FC = () => {
                   onChange={handleChange}
                   required
                 />
-              </Grid>
-              <Grid item xs={12} md={6} component="div">
+              </Box>
+              <Box sx={{ flex: '1 1 45%' }}>
                 <TextField
                   fullWidth
                   type="date"
@@ -139,8 +138,8 @@ const AddMember: React.FC = () => {
                   InputLabelProps={{ shrink: true }}
                   required
                 />
-              </Grid>
-              <Grid item xs={12} component="div">
+              </Box>
+              <Box sx={{ flex: '1 1 100%' }}>
                 <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
                   <Button
                     variant="outlined"
@@ -163,8 +162,8 @@ const AddMember: React.FC = () => {
                     {loading ? 'Registering...' : 'Register Member'}
                   </Button>
                 </Box>
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
           </form>
         </CardContent>
       </Card>

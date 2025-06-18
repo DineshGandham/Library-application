@@ -29,8 +29,7 @@ export function useLogin() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const result = await dispatch(loginUser(userData)).unwrap();
-            console.log("Login Success:", result);
+            await dispatch(loginUser(userData)).unwrap();
             navigate("/");
         } catch (error) {
             console.error("Login Failed:", error);
