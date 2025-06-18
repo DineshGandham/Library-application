@@ -53,35 +53,30 @@ const BooksList: React.FC = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
 
-  useEffect(() => {
-    fetchBooks();
-  }, []);
-
   const fetchBooks = async () => {
-    setLoading(true);
     try {
       const response = await bookService.getAll();
       setBooks(response.data);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to fetch books');
-    } finally {
-      setLoading(false);
+    } catch (err) {
+      console.error('Failed to fetch books:', err);
     }
   };
+
+  useEffect(() => {
+    fetchBooks();
+  }, []);
 
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this book?')) {
       try {
         await bookService.delete(id);
         fetchBooks();
-      } catch (err: any) {
-        setError(err.response?.data?.message || 'Failed to delete book');
+      } catch (err) {
+        console.error('Failed to delete book:', err);
       }
     }
   };

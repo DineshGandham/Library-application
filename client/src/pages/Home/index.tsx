@@ -2,7 +2,6 @@ import React from 'react';
 import Header from './Header';
 import { useHome } from '../../hooks/Home/useHome';
 import AddBook from '../../components/AddBook';
-import { Book } from '../../types';
 
 const Home: React.FC = () => {
   const { isOpen, setIsOpen, closeModal, books, handleLogOut } = useHome();
@@ -20,14 +19,14 @@ const Home: React.FC = () => {
           </button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {books && books.map((book: Book) => (
+          {books && books.map((book) => (
             <div
               key={book._id}
               className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 ease-in-out"
             >
               {/* Cover Image */}
               <img
-                src={`http://localhost:5000${book.coverImage}`}
+                src={book.coverImage ? `http://localhost:5000${book.coverImage}` : '/placeholder-book.jpg'}
                 alt={book.title}
                 className="h-48 w-full object-cover"
               />
@@ -35,6 +34,9 @@ const Home: React.FC = () => {
               <div className="p-4">
                 <h2 className="text-lg font-semibold text-gray-800">{book.title}</h2>
                 <p className="text-gray-600">Author: {book.author}</p>
+                <p className="text-gray-600">ISBN: {book.isbn}</p>
+                <p className="text-gray-600">Category: {book.category}</p>
+                <p className="text-gray-600">Available: {book.available} of {book.quantity}</p>
               </div>
             </div>
           ))}
