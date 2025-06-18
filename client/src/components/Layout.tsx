@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { styled } from '@mui/material/styles';
 import {
   AppBar,
   Box,
@@ -7,7 +6,6 @@ import {
   Drawer,
   IconButton,
   List,
-  ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
@@ -19,7 +17,6 @@ import {
 } from '@mui/material';
 import {
   Menu as MenuIcon,
-  ChevronLeft as ChevronLeftIcon,
   Dashboard as DashboardIcon,
   Book as BookIcon,
   Person as PersonIcon,
@@ -28,14 +25,13 @@ import {
   Brightness4 as DarkModeIcon,
   Brightness7 as LightModeIcon,
 } from '@mui/icons-material';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 
 const drawerWidth = 240;
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const navigate = useNavigate();
-  const location = useLocation();
   const muiTheme = useMuiTheme();
   const { mode, toggleTheme } = useTheme();
   const isMobile = useMediaQuery(muiTheme.breakpoints.down('md'));
@@ -84,7 +80,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         ))}
         <ListItemButton
           onClick={() => {
-            // Handle logout
             navigate('/login');
           }}
           sx={{

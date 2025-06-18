@@ -2,34 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
-  Card,
-  CardContent,
   Typography,
   TextField,
   Button,
-  Grid,
-  MenuItem,
   Alert,
   Snackbar,
-  useTheme,
   Container,
   Paper,
 } from '@mui/material';
 import { bookService } from '../../services/api';
 
-const categories = [
-  'Fiction',
-  'Non-Fiction',
-  'Science',
-  'History',
-  'Biography',
-  'Technology',
-  'Art',
-  'Philosophy',
-];
-
 const AddBook: React.FC = () => {
-  const theme = useTheme();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -91,8 +74,8 @@ const AddBook: React.FC = () => {
           Add New Book
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+            <Box sx={{ flex: '1 1 45%' }}>
               <TextField
                 required
                 fullWidth
@@ -102,8 +85,8 @@ const AddBook: React.FC = () => {
                 onChange={handleChange}
                 autoFocus
               />
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </Box>
+            <Box sx={{ flex: '1 1 45%' }}>
               <TextField
                 required
                 fullWidth
@@ -112,8 +95,8 @@ const AddBook: React.FC = () => {
                 value={formData.author}
                 onChange={handleChange}
               />
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </Box>
+            <Box sx={{ flex: '1 1 45%' }}>
               <TextField
                 required
                 fullWidth
@@ -122,8 +105,8 @@ const AddBook: React.FC = () => {
                 value={formData.isbn}
                 onChange={handleChange}
               />
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </Box>
+            <Box sx={{ flex: '1 1 45%' }}>
               <TextField
                 required
                 fullWidth
@@ -132,23 +115,23 @@ const AddBook: React.FC = () => {
                 value={formData.category}
                 onChange={handleChange}
               />
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </Box>
+            <Box sx={{ flex: '1 1 45%' }}>
               <TextField
                 fullWidth
                 label="Publisher"
                 name="publisher"
               />
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </Box>
+            <Box sx={{ flex: '1 1 45%' }}>
               <TextField
                 fullWidth
                 label="Published Year"
                 name="publishedYear"
                 type="number"
               />
-            </Grid>
-            <Grid item xs={12}>
+            </Box>
+            <Box sx={{ flex: '1 1 100%' }}>
               <TextField
                 fullWidth
                 label="Description"
@@ -158,8 +141,8 @@ const AddBook: React.FC = () => {
                 value={formData.description}
                 onChange={handleChange}
               />
-            </Grid>
-            <Grid item xs={12}>
+            </Box>
+            <Box sx={{ flex: '1 1 100%' }}>
               <Box sx={{ mb: 2 }}>
                 <input
                   accept="image/*"
@@ -183,8 +166,8 @@ const AddBook: React.FC = () => {
                   />
                 </Box>
               )}
-            </Grid>
-            <Grid item xs={12}>
+            </Box>
+            <Box sx={{ flex: '1 1 100%' }}>
               <Button
                 type="submit"
                 variant="contained"
@@ -196,24 +179,23 @@ const AddBook: React.FC = () => {
               </Button>
               <Button
                 variant="outlined"
+                color="primary"
                 onClick={() => navigate('/books')}
                 disabled={loading}
               >
                 Cancel
               </Button>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </Box>
+        {error && (
+          <Snackbar open={!!error} autoHideDuration={6000}>
+            <Alert severity="error" sx={{ width: '100%' }}>
+              {error}
+            </Alert>
+          </Snackbar>
+        )}
       </Paper>
-      <Snackbar
-        open={!!error}
-        autoHideDuration={6000}
-        onClose={() => setError(null)}
-      >
-        <Alert onClose={() => setError(null)} severity="error">
-          {error}
-        </Alert>
-      </Snackbar>
     </Container>
   );
 };

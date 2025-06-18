@@ -7,28 +7,16 @@ import {
   Typography,
   TextField,
   Button,
-  Grid,
-  MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
   Alert,
   Snackbar,
   useTheme,
-  Autocomplete,
+  SelectChangeEvent,
 } from '@mui/material';
-import { borrowingService, bookService, memberService } from '../../services/api';
-
-interface Book {
-  _id: string;
-  title: string;
-  author: string;
-  status: string;
-}
-
-interface Member {
-  _id: string;
-  name: string;
-  email: string;
-  booksIssued: number;
-}
+import { bookService, memberService, borrowingService } from '../../services/api';
+import { Book } from '../../types';
 
 const IssueBook: React.FC = () => {
   const theme = useTheme();
@@ -36,7 +24,7 @@ const IssueBook: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [books, setBooks] = useState<Book[]>([]);
-  const [members, setMembers] = useState<Member[]>([]);
+  const [members, setMembers] = useState<any[]>([]);
   const [formData, setFormData] = useState({
     bookId: '',
     memberId: '',
@@ -46,20 +34,28 @@ const IssueBook: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [booksRes, membersRes] = await Promise.all([
+        const [booksResponse, membersResponse] = await Promise.all([
           bookService.getAll(),
           memberService.getAll(),
         ]);
-        setBooks(booksRes.data.filter((book: Book) => book.status === 'Available'));
-        setMembers(membersRes.data.filter((member: Member) => member.booksIssued < 3));
-      } catch (err) {
-        setError('Failed to fetch data');
+        setBooks(booksResponse.data);
+        setMembers(membersResponse.data);
+      } catch (err: any) {
+        setError(err.response?.data?.message || 'Failed to fetch data');
       }
     };
     fetchData();
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSelectChange = (e: SelectChangeEvent<string>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -73,7 +69,7 @@ const IssueBook: React.FC = () => {
     setError(null);
 
     try {
-      await borrowingService.borrowBook(formData);
+      await borrowingService.create(formData);
       navigate('/borrowings');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to issue book');
@@ -91,63 +87,57 @@ const IssueBook: React.FC = () => {
       <Card>
         <CardContent>
           <form onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={6} component="div">
-                <Autocomplete
-                  options={books}
-                  getOptionLabel={(option) => `${option.title} by ${option.author}`}
-                  onChange={(_, value) => {
-                    setFormData((prev) => ({
-                      ...prev,
-                      bookId: value?._id || '',
-                    }));
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      fullWidth
-                      label="Select Book"
-                      required
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={12} md={6} component="div">
-                <Autocomplete
-                  options={members}
-                  getOptionLabel={(option) => `${option.name} (${option.email})`}
-                  onChange={(_, value) => {
-                    setFormData((prev) => ({
-                      ...prev,
-                      memberId: value?._id || '',
-                    }));
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      fullWidth
-                      label="Select Member"
-                      required
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={12} md={6} component="div">
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+              <Box sx={{ flex: '1 1 45%', minWidth: { xs: '100%', md: '45%' } }}>
+                <FormControl fullWidth>
+                  <InputLabel>Book</InputLabel>
+                  <Select
+                    name="bookId"
+                    value={formData.bookId}
+                    onChange={handleSelectChange}
+                    required
+                  >
+                    {books.map((book) => (
+                      <option key={book._id} value={book._id}>
+                        {book.title} by {book.author}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Box>
+
+              <Box sx={{ flex: '1 1 45%', minWidth: { xs: '100%', md: '45%' } }}>
+                <FormControl fullWidth>
+                  <InputLabel>Member</InputLabel>
+                  <Select
+                    name="memberId"
+                    value={formData.memberId}
+                    onChange={handleSelectChange}
+                    required
+                  >
+                    {members.map((member) => (
+                      <option key={member._id} value={member._id}>
+                        {member.name}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Box>
+
+              <Box sx={{ flex: '1 1 45%', minWidth: { xs: '100%', md: '45%' } }}>
                 <TextField
                   fullWidth
                   type="date"
                   label="Due Date"
                   name="dueDate"
                   value={formData.dueDate}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                   InputLabelProps={{ shrink: true }}
                   required
-                  inputProps={{
-                    min: new Date().toISOString().split('T')[0],
-                  }}
                 />
-              </Grid>
-              <Grid item xs={12} component="div">
+              </Box>
+
+              <Box sx={{ flex: '1 1 100%' }}>
                 <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
                   <Button
                     variant="outlined"
@@ -170,8 +160,8 @@ const IssueBook: React.FC = () => {
                     {loading ? 'Issuing...' : 'Issue Book'}
                   </Button>
                 </Box>
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
           </form>
         </CardContent>
       </Card>

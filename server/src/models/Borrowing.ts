@@ -10,6 +10,7 @@ export interface IBorrowing extends Document {
   fine?: number;
   createdAt: Date;
   updatedAt: Date;
+  calculateFine: () => number | undefined;
 }
 
 const borrowingSchema = new Schema<IBorrowing>(

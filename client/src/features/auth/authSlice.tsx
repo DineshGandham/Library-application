@@ -15,7 +15,8 @@ interface AuthState {
   message: string;
 }
 
-const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null;
+const userStr = localStorage.getItem('user');
+const user = userStr ? JSON.parse(userStr) as User : null;
 
 const initialState: AuthState = {
   user: user,

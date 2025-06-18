@@ -3,7 +3,12 @@ export interface Book {
     _id: string;
     title: string;
     author: string;
-    coverImage: string;
+    isbn: string;
+    category: string;
+    description: string;
+    quantity: number;
+    available: number;
+    coverImage?: string;
     createdAt: string;
     updatedAt: string;
 }
