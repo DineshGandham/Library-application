@@ -50,7 +50,12 @@ const initialState: BookState = {
 const booksSlice = createSlice({
   name: "books",
   initialState,
-  reducers: {},
+  reducers: {
+    clearBooks: (state) => {
+      state.books = [];
+      state.status = 'idle';
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchBooks.pending, (state) => {
@@ -69,4 +74,5 @@ const booksSlice = createSlice({
   },
 });
 
+export const { clearBooks } = booksSlice.actions;
 export default booksSlice.reducer;
