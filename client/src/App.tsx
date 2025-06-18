@@ -1,11 +1,19 @@
-import { BrowserRouter as Router } from 'react-router-dom'
-import AppRoutes from './routes/AppRoutes'
-function App() {
-  return (
-    <Router>
-        <AppRoutes/>
-    </Router>
-  )
-}
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { ThemeProvider } from './context/ThemeContext';
+import Layout from './components/Layout';
+import AppRoutes from './routes';
 
-export default App
+const App: React.FC = () => {
+  return (
+    <ThemeProvider>
+      <Router>
+        <Layout>
+          <AppRoutes />
+        </Layout>
+      </Router>
+    </ThemeProvider>
+  );
+};
+
+export default App;

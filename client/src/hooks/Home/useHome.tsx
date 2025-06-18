@@ -3,11 +3,12 @@ import { useDispatch,useSelector } from 'react-redux';
 import {fetchBooks} from '../../features/books/bookSlice'
 import {logout} from '../../features/auth/authSlice'
 import { useNavigate } from 'react-router-dom';
+import { AppDispatch, RootState } from '../../app/store';
 
 export function useHome() {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
-    const books = useSelector((state) => state.books.books);
+    const books = useSelector((state: RootState) => state.books.books);
     const [isOpen,setIsOpen] =useState(false);
     useEffect(()=>{
         dispatch(fetchBooks())

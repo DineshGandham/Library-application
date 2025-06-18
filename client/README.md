@@ -1,54 +1,55 @@
-# React + TypeScript + Vite
+# Library Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Premium UI Setup
 
-Currently, two official plugins are available:
+This project uses:
+- Material-UI (MUI) for a modern, premium look
+- Tailwind CSS for utility-first styling (optional, not required for MUI but can be used for custom styles)
+- React Router for navigation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Requirements
+- Node.js (v16+ recommended)
+- npm
 
-## Expanding the ESLint configuration
+### Installed Packages
+- @mui/material
+- @mui/icons-material
+- @mui/lab
+- @emotion/react
+- @emotion/styled
+- framer-motion
+- react-router-dom
+- tailwindcss (optional)
+- postcss (optional)
+- autoprefixer (optional)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Setup Instructions
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+1. Install dependencies:
+   ```sh
+   cd client
+   npm install
+   ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Start the development server:
+   ```sh
+   npm run dev
+   ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+3. The app will be available at `http://localhost:5173` (or as specified by Vite).
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+### Project Structure
+- `src/theme.ts` — Custom MUI theme
+- `src/components/Layout.tsx` — Responsive sidebar and header
+- `src/pages/Dashboard.tsx` — Modern dashboard
+- `src/pages/Login.tsx` — Modern login page
+- `src/pages/Books.tsx` — Books management
+- `src/pages/Members.tsx` — Members management
+
+### Customization
+- Update the theme in `src/theme.ts` for branding
+- Add more pages/routes as needed
+
+---
+
+For any issues, please check the dependencies and ensure your Node.js version is compatible.
