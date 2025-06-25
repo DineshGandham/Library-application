@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:6.0
+    container_name: library-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: library
+    networks:
+      - library-network
+
+  # Backend Server (TypeScript + Nodemon)
+  server:
+    build:
+      context: ./server
+    container_name: library-server
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mount source code for hot reloading
+      - ./server:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://mongodb:27017/library
+      - PORT=3000
+    depends_on:
+      - mongodb
+    networks:
+      - library-network
+
+  # Frontend Client (Vite + React + TypeScript)
+  client:
+    build:
+      context: ./client
+    container_name: library-client
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    volumes:
+      # Mount source code for hot reloading
+      - ./client:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:3000
+    depends_on:
+      - server
+    networks:
+      - library-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  library-network:
+    driver: bridge
